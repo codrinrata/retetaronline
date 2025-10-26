@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#667eea">
+    <title>Login - Retetar Online</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .login-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+        }
+        .logo {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px;
+            font-size: 1.1rem;
+            min-height: 48px;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        .admin-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 576px) {
+            .login-card {
+                padding: 1.5rem;
+            }
+            .logo {
+                font-size: 2.5rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="logo">🍳</div>
+        <h2 class="text-center mb-4">Retetar Online</h2>
+        <p class="text-center text-muted mb-4">Enter password to access recipes</p>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% if blocked %}
+            <div class="alert alert-danger">
+                <strong>⛔ Account Temporarily Locked</strong>
+                <p class="mb-0">Too many failed login attempts. Please wait {{ wait_time }} minutes and try again.</p>
+            </div>
+        {% else %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        class="form-control form-control-lg" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter password"
+                        required
+                        autofocus>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-login w-100">
+                    🔓 Access Recipes
+                </button>
+            </form>
+        {% endif %}
+        
+        <div class="admin-link">
+            <small class="text-muted">
+                Admin? <a href="{% url 'recipes:admin_login' %}">Login with username</a>
+            </small>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

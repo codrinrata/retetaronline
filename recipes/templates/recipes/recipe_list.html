@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}All Recipes - Retetar Online{% endblock %}
+
+{% block content %}
+<div class="row mb-3 mb-md-4">
+    <div class="col-12 col-md-8">
+        {% if is_filtered %}
+            <h1 class="h2 h1-md">{{ category }} Recipes</h1>
+            <p class="lead text-muted">
+                <a href="{% url 'recipes:recipe_list' %}" class="text-decoration-none">← All recipes</a>
+            </p>
+        {% else %}
+            <h1 class="h2 h1-md">All Recipes</h1>
+            <p class="lead text-muted d-none d-md-block">Browse our collection of delicious recipes</p>
+        {% endif %}
+    </div>
+    <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
+        <a href="{% url 'recipes:recipe_create' %}" class="btn btn-success w-100 w-md-auto">
+            ➕ Add Recipe
+        </a>
+    </div>
+</div>
+
+{% if recipes %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for recipe in recipes %}
+        <div class="col">
+            <a href="{% url 'recipes:recipe_detail' recipe.pk %}" class="text-decoration-none">
+                <div class="card h-100 shadow-sm recipe-card">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark">{{ recipe.title }}</h5>
+                        <p class="card-text">
+                            <span class="badge bg-primary">{{ recipe.category }}</span>
+                        </p>
+                        <p class="card-text text-muted">
+                            <small>
+                                {% if recipe.ingredients|length > 100 %}
+                                    {{ recipe.ingredients|slice:":100" }}...
+                                {% else %}
+                                    {{ recipe.ingredients|slice:":100" }}
+                                {% endif %}
+                            </small>
+                        </p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">{{ recipe.created_at|date:"M d, Y" }}</small>
+                            <span class="text-primary">View Recipe →</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info text-center" role="alert">
+        <h4 class="alert-heading">No recipes yet!</h4>
+        <p>Start by adding your first recipe.</p>
+        <a href="{% url 'recipes:recipe_create' %}" class="btn btn-success mt-2">
+            ➕ Add Your First Recipe
+        </a>
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .recipe-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    .recipe-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2) !important;
+    }
+    a:has(.recipe-card) {
+        color: inherit;
+    }
+    
+    /* Mobile-specific styles */
+    @media (max-width: 768px) {
+        .recipe-card:hover {
+            transform: none; /* Disable transform on mobile */
+        }
+        .recipe-card:active {
+            transform: scale(0.98); /* Tap feedback */
+        }
+    }
+</style>
+{% endblock %}

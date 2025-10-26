@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ recipe.title }} - Retetar Online{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 col-lg-10 col-xl-8 mx-auto">
+        <!-- Header -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3 gap-2">
+            <a href="{% url 'recipes:recipe_list' %}" class="btn btn-outline-secondary btn-sm">
+                ← Back
+            </a>
+            <span class="badge bg-primary fs-6">{{ recipe.category }}</span>
+        </div>
+
+        <!-- Recipe Title -->
+        <h1 class="h2 h1-md mb-3">{{ recipe.title }}</h1>
+        
+        <p class="text-muted mb-4">
+            <small>Added on {{ recipe.created_at|date:"F d, Y" }}</small>
+        </p>
+
+        <hr>
+
+        <!-- Ingredients -->
+        <div class="mb-4 mb-md-5">
+            <h2 class="h4 h3-md mb-3">🥗 Ingredients</h2>
+            <div class="card">
+                <div class="card-body">
+                    <pre class="mb-0" style="white-space: pre-wrap; font-family: inherit; font-size: 0.95rem;">{{ recipe.ingredients }}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="mb-4 mb-md-5">
+            <h2 class="h4 h3-md mb-3">👨‍🍳 Instructions</h2>
+            <div class="card">
+                <div class="card-body">
+                    <pre class="mb-0" style="white-space: pre-wrap; font-family: inherit; font-size: 0.95rem;">{{ recipe.instructions }}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-grid gap-2 d-md-flex mb-4">
+            <a href="{% url 'recipes:recipe_list' %}" class="btn btn-primary">
+                All Recipes
+            </a>
+            <a href="{% url 'recipes:recipe_update' recipe.pk %}" class="btn btn-warning">
+                ✏️ Edit
+            </a>
+            <a href="{% url 'recipes:recipe_delete' recipe.pk %}" class="btn btn-danger">
+                🗑️ Delete
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

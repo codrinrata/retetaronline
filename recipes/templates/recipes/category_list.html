@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Categories - Retetar Online{% endblock %}
+
+{% block content %}
+<h1 class="display-4 mb-4">Recipe Categories</h1>
+
+{% if categories %}
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-3">
+        {% for cat in categories %}
+        <div class="col">
+            <div class="card text-center h-100 shadow-sm hover-card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ cat.category }}</h5>
+                    <p class="text-muted mb-2">
+                        <small>{{ cat.count }} recipe{{ cat.count|pluralize }}</small>
+                    </p>
+                    <a href="{% url 'recipes:category_recipes' cat.category %}" class="btn btn-sm btn-outline-primary stretched-link">
+                        View Recipes
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        No categories available yet. Add some recipes first!
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hover-card {
+        transition: transform 0.2s;
+    }
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+    }
+</style>
+{% endblock %}
